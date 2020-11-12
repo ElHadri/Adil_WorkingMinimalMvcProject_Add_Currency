@@ -7,6 +7,7 @@ namespace DomainLogic
 {
     public interface IProductRepository
     {
-        public IEnumerable<Product> GetFeaturedProducts(); 
+        //  returning “raw” Entities from the persistence store
+        public IEnumerable<FeaturedProduct> GetFeaturedProducts(); 
     }
 }

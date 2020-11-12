@@ -16,9 +16,10 @@ namespace DomainLogic
             _userContext = userContext;
         }
 
-        public IEnumerable<DiscountedProduct> GetDiscountedProducts()
+        public IEnumerable<FeaturedDiscountedProduct> GetFeaturedDiscountedProducts()
         {
-            return from product in _productRepository.GetFeaturedProducts()
+            IEnumerable<FeaturedProduct> products = _productRepository.GetFeaturedProducts();
+            return from product in products
                    select product.ApplyDiscountFor(_userContext);
         }
     }

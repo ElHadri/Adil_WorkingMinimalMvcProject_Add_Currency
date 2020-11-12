@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DomainLogic
 {
+    // Data object
     // POCO
-    public class DiscountedProduct
+    // Model (implements no interface)
+    public class FeaturedDiscountedProduct
     {
         public string Name { get; }
         public decimal UnitPrice { get; }
 
-        public DiscountedProduct(string name, decimal unitPrice)
+        public FeaturedDiscountedProduct(string name, decimal unitPrice)
         {
             if (name == null) throw new ArgumentNullException("name");
 

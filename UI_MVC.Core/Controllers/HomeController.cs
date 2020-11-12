@@ -33,9 +33,9 @@ namespace UI_MVC.Core.Controllers
             //});
             //---------------------------------------------------------------------------------------------
 
-            IEnumerable<DiscountedProduct> products = _productService.GetDiscountedProducts();
-            var vm = new FeaturedProductsVM(from product in products
-                                                   select new FeaturedProductVM(product));
+            IEnumerable<FeaturedDiscountedProduct> products = _productService.GetFeaturedDiscountedProducts();
+            var vm = new FeaturedDiscountedProductsVM(from product in products
+                                                   select new FeaturedDiscountedProductVM(product));
 
             // Wraps the view model in an MVC ViewResult object using MVC’s helper method, View
             return View(vm);

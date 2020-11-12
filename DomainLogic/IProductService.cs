@@ -6,6 +6,7 @@ namespace DomainLogic
 {
     public interface IProductService
     {
-        public IEnumerable<DiscountedProduct> GetDiscountedProducts();
+        // applies business logic
+        public IEnumerable<FeaturedDiscountedProduct> GetFeaturedDiscountedProducts();
     }
 }

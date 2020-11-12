@@ -13,11 +13,11 @@ namespace SqlDataAccessLayer
             if (context == null) throw new ArgumentNullException("context");
             _context = context;
         }
-        public IEnumerable<Product> GetFeaturedProducts()
+        public IEnumerable<FeaturedProduct> GetFeaturedProducts()
         {
             return from product in _context.Products
                    where product.IsFeatured
-                   select new Product { Name = product.Name, UnitPrice = product.UnitPrice, IsFeatured = product.IsFeatured };
+                   select new FeaturedProduct { Name = product.Name, UnitPrice = product.UnitPrice};
         }
     }
 }
