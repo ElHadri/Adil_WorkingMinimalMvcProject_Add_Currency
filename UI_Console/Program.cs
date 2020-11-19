@@ -1,11 +1,12 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Text;
+﻿using CurrencyConverterLibrary;
 
 using DomainLogic;
 
 using SqlDataAccessLayer;
+
+using System;
+using System.Globalization;
+using System.Text;
 
 //using UI_MVC.Core.Controllers;
 //using UI_MVC.Core.Models;
@@ -46,28 +47,46 @@ namespace UI_Console
 
         static void Main(string[] args)
         {
-            Console.OutputEncoding = Encoding.Unicode;
+            Console.OutputEncoding = Encoding.Unicode; 
+            Console.WriteLine("مرحبا بك");
 
             string connectionString = args[0];
 
             Console.WriteLine("Are you a preferred customer ?  [True or False]");
-            string response = Console.ReadLine();
-            bool isPreferredCustomer = bool.Parse(response);
+            string response1 = Console.ReadLine();
+            bool isPreferredCustomer = bool.Parse(response1);
 
+            Console.WriteLine("What's your favorite currency ?  [EUR, USD, or MAD]");
+            string response2 = Console.ReadLine();
+            Currency preferredCurrency = response2 switch
+            {
+                "USD" => Currency.USD,
+                "EUR" => Currency.EUR,
+                "MAD" => Currency.MAD,
+                _ => throw new Exception(response2)
+            };
 
             // Composition Root
             var products = new ProductService(
                  new SqlProductRepository(new CommerceContext(connectionString)),
-                 new ConsoleUserContextAdapter(isPreferredCustomer))
+                 new ConsoleUserContextAdapter(isPreferredCustomer, preferredCurrency),
+                 new CurrencyConverterTrial())
                  .GetFeaturedDiscountedProducts();
 
             // mon View
             Console.WriteLine("Featured products:");
-            CultureInfo PriceCulture = new CultureInfo("fr-BE");
+
+            CultureInfo Culture = preferredCurrency switch
+            {
+                Currency.EUR => new CultureInfo("fr-BE"),
+                Currency.USD => new CultureInfo("en-US"),
+                Currency.MAD => new CultureInfo("ar-MA"),
+                _ => new CultureInfo("fr-BE")
+            };
 
             foreach (var product in products)
             {
-                Console.WriteLine(string.Format(PriceCulture, "{0} ({1:C})", product.Name, product.UnitPrice));
+                Console.WriteLine(string.Format(Culture, "{0} ({1:C})", product.Name, product.UnitPrice.Amount));
             }
         }
     }

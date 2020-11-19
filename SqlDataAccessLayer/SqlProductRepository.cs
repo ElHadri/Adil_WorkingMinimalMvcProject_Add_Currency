@@ -17,7 +17,11 @@ namespace SqlDataAccessLayer
         {
             return from product in _context.Products
                    where product.IsFeatured
-                   select new FeaturedProduct { Name = product.Name, UnitPrice = product.UnitPrice};
+                   select new FeaturedProduct
+                   {
+                       Name = product.Name,
+                       UnitPrice = new Money(product.UnitPrice, Currency.EUR) // supposons que la DB enregistre l'euro
+                   };
         }
     }
 }

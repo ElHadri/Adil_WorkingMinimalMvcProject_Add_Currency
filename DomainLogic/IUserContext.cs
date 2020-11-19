@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DomainLogic
+﻿namespace DomainLogic
 {
     public interface IUserContext
     {
+        Currency PreferedCurrency { get; }
         bool IsInRole(Role role);
     }
 
-    public enum Role { PreferredCustomer }
+    public enum Role
+    {
+        PreferredCustomer
+    }
 }
 

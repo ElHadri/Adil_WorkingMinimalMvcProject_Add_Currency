@@ -8,9 +8,9 @@ namespace DomainLogic
     public class FeaturedDiscountedProduct
     {
         public string Name { get; }
-        public decimal UnitPrice { get; }
+        public Money UnitPrice { get; }
 
-        public FeaturedDiscountedProduct(string name, decimal unitPrice)
+        public FeaturedDiscountedProduct(string name, Money unitPrice)
         {
             if (name == null) throw new ArgumentNullException("name");
 

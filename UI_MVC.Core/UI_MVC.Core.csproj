@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CurrencyConverterLibrary\CurrencyConverterLibrary.csproj" />
     <ProjectReference Include="..\DomainLogic\DomainLogic.csproj" />
     <ProjectReference Include="..\SqlDataAccessLayer\SqlDataAccessLayer.csproj" />
   </ItemGroup>

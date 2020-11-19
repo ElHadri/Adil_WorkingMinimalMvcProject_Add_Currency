@@ -1,13 +1,11 @@
 ﻿using System;
-
-using DomainLogic;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
-
-using SqlDataAccessLayer;
-
 using UI_MVC.Core.Controllers;
+
+using DomainLogic;
+using SqlDataAccessLayer;
+using CurrencyConverterLibrary;
 
 namespace UI_MVC.Core
 {
@@ -28,7 +26,8 @@ namespace UI_MVC.Core
                 new HomeController(
                     new ProductService(
                         new SqlProductRepository(new CommerceContext(_connectionString)),
-                        new AspNetUserContextAdapter()));
+                        new AspNetUserContextAdapter(),
+                        new CurrencyConverterTrial()));
             /* If we do not know what MVC asks for. */
             //Type type = context.ActionDescriptor.ControllerTypeInfo.AsType();
             //if (type == typeof(HomeController))
