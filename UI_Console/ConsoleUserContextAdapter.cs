@@ -1,5 +1,6 @@
 ﻿
 using DomainLogic;
+using DomainLogic.Interfaces;
 
 using System;
 

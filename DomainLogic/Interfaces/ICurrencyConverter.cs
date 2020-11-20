@@ -1,4 +1,4 @@
-﻿namespace DomainLogic
+﻿namespace DomainLogic.Interfaces
 {
     public interface ICurrencyConverter
     {

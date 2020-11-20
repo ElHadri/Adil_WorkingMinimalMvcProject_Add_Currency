@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DomainLogic;
 using System.Linq;
+using DomainLogic.Interfaces;
 
 namespace SqlDataAccessLayer
 {

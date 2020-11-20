@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using DomainLogic;
+﻿using DomainLogic;
+using DomainLogic.Interfaces;
+
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using UI_MVC.Core.Models;
 
 namespace UI_MVC.Core.Controllers
@@ -35,7 +36,7 @@ namespace UI_MVC.Core.Controllers
 
             IEnumerable<FeaturedDiscountedProduct> products = _productService.GetFeaturedDiscountedProducts();
             var vm = new FeaturedDiscountedProductsVM(from product in products
-                                                   select new FeaturedDiscountedProductVM(product));
+                                                      select new FeaturedDiscountedProductVM(product));
 
             // Wraps the view model in an MVC ViewResult object using MVC’s helper method, View
             return View(vm);

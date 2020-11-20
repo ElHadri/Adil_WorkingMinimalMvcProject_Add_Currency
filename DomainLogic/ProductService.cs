@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
+using DomainLogic.Interfaces;
+
 
 namespace DomainLogic
 {
@@ -11,7 +13,10 @@ namespace DomainLogic
         private readonly IUserContext _userContext;
         private readonly ICurrencyConverter _converter;
 
-        public ProductService(IProductRepository productRepository, IUserContext userContext, ICurrencyConverter converter)
+        public ProductService(
+            IProductRepository productRepository,
+            IUserContext userContext,
+            ICurrencyConverter converter)
         {
             if (productRepository == null)
                 throw new ArgumentNullException("repository");
@@ -25,7 +30,6 @@ namespace DomainLogic
             _converter = converter;
         }
 
-        // with
         public IEnumerable<FeaturedDiscountedProduct> GetFeaturedDiscountedProducts()
         {
             IEnumerable<FeaturedProduct> products = _productRepository.GetFeaturedProducts();

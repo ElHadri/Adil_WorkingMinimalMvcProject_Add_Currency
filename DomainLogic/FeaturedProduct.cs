@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DomainLogic.Interfaces;
+
+using System;
 
 namespace DomainLogic
 {
