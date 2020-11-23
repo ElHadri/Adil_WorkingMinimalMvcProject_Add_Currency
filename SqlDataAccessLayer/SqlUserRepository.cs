@@ -19,13 +19,7 @@ namespace SqlDataAccessLayer
 
         public User GetById(Guid id)
         {
-            throw new NotImplementedException(); // to do
-        }
-
-        // This method is used by the CurrentUser property of the previously discussed AspNetUserContextAdapter.
-        public User GetByName(string name)
-        {
-            throw new NotImplementedException(); // to do
+            throw new NotImplementedException(); // to do 
         }
 
         public void Update(User user)

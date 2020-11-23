@@ -4,9 +4,8 @@ using System.Text;
 
 namespace DomainLogic.Interfaces
 {
-    public interface IUserRepository
+    public interface IUserByNameRetriever
     {
-        void Update(User user);
-        User GetById(Guid id);
+        User GetByName(string name);
     }
 }

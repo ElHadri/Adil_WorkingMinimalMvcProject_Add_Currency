@@ -23,9 +23,11 @@ namespace UI_MVC.Core
         public object Create(ControllerContext controllerContext) // 'controllerContext' paramater est obligatoire même s'il n'est pas utilisé ici
         {
             var commerceContext = new CommerceContext(_connectionString);
+            var userByNameRetriever = new SqlUserByNameRetriever(commerceContext);
+
+            IUserContext userContext = new AspNetUserContextAdapter(userByNameRetriever);
             var appender = new SqlAuditTrailAppender(userContext, commerceContext, new TimeProvider());
             var userRepository = new SqlUserRepository(commerceContext, appender);
-            IUserContext userContext = new AspNetUserContextAdapter(userRepository);
 
             /* Here we know that MVC asks for a HomeController. */
             return

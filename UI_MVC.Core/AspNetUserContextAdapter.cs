@@ -12,9 +12,9 @@ namespace UI_MVC.Core
         private static HttpContextAccessor Accessor = new HttpContextAccessor();
 
         // added to allow retrieving user information from the database.
-        private readonly IUserRepository repository;
+        private readonly IUserByNameRetriever repository;
 
-        public AspNetUserContextAdapter(IUserRepository repository)
+        public AspNetUserContextAdapter(IUserByNameRetriever repository)
         {
             if (repository == null)
                 throw new ArgumentNullException("userRepository");
