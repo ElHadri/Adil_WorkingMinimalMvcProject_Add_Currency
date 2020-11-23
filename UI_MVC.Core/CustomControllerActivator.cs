@@ -6,6 +6,7 @@ using UI_MVC.Core.Controllers;
 using DomainLogic;
 using SqlDataAccessLayer;
 using CurrencyConverterLibrary;
+using DomainLogic.Interfaces;
 
 namespace UI_MVC.Core
 {
@@ -19,18 +20,24 @@ namespace UI_MVC.Core
         }
 
         // ASP.NET Core MVC invokes this method to create a new controller instance for each incoming request(Adil)
-        public object Create(ControllerContext context) // 'context' paramater est obligatoire même s'il n'est pas utilisé ici
+        public object Create(ControllerContext controllerContext) // 'controllerContext' paramater est obligatoire même s'il n'est pas utilisé ici
         {
+            var commerceContext = new CommerceContext(_connectionString);
+            var appender = new SqlAuditTrailAppender(userContext, commerceContext, new TimeProvider());
+            var userRepository = new SqlUserRepository(commerceContext, appender);
+            IUserContext userContext = new AspNetUserContextAdapter(userRepository);
+
             /* Here we know that MVC asks for a HomeController. */
             return
                 new HomeController(
                     new ProductService(
-                        new SqlProductRepository(new CommerceContext(_connectionString)),
-                        new AspNetUserContextAdapter(),
+                        new SqlProductRepository(commerceContext),
+                        userContext,
                         new CurrencyConverterTrial()));
+
             /* If we do not know what MVC asks for. */
             //Type type = context.ActionDescriptor.ControllerTypeInfo.AsType();
-            //if (type == typeof(HomeController))
+            //if (type == typeof(HomeController))un
             //{
             //    return
             //    new HomeController(new ProductService(new SqlProductRepository(new CommerceContext(_connectionString)),

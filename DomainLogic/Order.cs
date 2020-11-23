@@ -1,6 +1,8 @@
-﻿namespace DomainLogic
+﻿using System;
+
+namespace DomainLogic
 {
-    public class Order
+    public class Order: Entity
     {
         public void Approve() { }
     }

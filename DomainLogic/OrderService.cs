@@ -1,39 +1,31 @@
-﻿using DomainLogic.Interfaces;
-using System;
+﻿using System;
+
+using DomainLogic.DomainEvents;
+using DomainLogic.Interfaces;
 
 namespace DomainLogic
 {
+    // the consumer’s single responsibility becomes to orchestrate these higher-level services
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository orderRepository;
-        private readonly IMessageService messageService;
-        private readonly IBillingSystem billingSystem;
-        private readonly ILocationService locationService;
-        private readonly IInventoryManagement inventoryManagement;
-
+        private readonly IEventHandler<OrderApproved> orderApproveddHandler;
+        private readonly IEventHandler<OrderCancelled> orderCancelledHandler;
         public OrderService(
             IOrderRepository orderRepository,
-            IMessageService messageService,
-            IBillingSystem billingSystem,
-            ILocationService locationService,
-            IInventoryManagement inventoryManagement)
+            IEventHandler<OrderApproved> orderApproveddHandler,
+            IEventHandler<OrderCancelled> orderCancelledHandler)
         {
             if (orderRepository == null)
                 throw new ArgumentNullException("orderRepository");
-            if (messageService == null)
-                throw new ArgumentNullException("messageService");
-            if (billingSystem == null)
-                throw new ArgumentNullException("billingSystem");
-            if (locationService == null)
-                throw new ArgumentNullException("locationService");
-            if (inventoryManagement == null)
-                throw new ArgumentNullException("inventoryManagement");
+            if (orderApproveddHandler == null)
+                throw new ArgumentNullException("orderApproveddHandler");
+            if (orderCancelledHandler == null)
+                throw new ArgumentNullException("orderCancelledHandler");
 
             this.orderRepository = orderRepository;
-            this.messageService = messageService;
-            this.billingSystem = billingSystem;
-            this.locationService = locationService;
-            this.inventoryManagement = inventoryManagement;
+            this.orderApproveddHandler = orderApproveddHandler;
+            this.orderCancelledHandler = orderCancelledHandler;
         }
 
         public void ApproveOrder(Order order)
@@ -42,11 +34,10 @@ namespace DomainLogic
             order.Approve();
             orderRepository.Save(order);
 
-            // Notifies other systems about the order
-            messageService.SendReceipt(new OrderReceipt { /*...*/ });   // Notifies customer
-            billingSystem.NotifyAccounting(/*...*/);                    // Notifies Accounting
-            locationService.FindWarehouses(/*...*/);                    // Finds closest warehouse(s) to notify
-            inventoryManagement.NotifyWarehouses(/*...*/);              // Notifies warehouse(s) about order
+            // Notifies other systems about the order (notifications are actions triggered when an order is approved)
+            // Here we assume the order is already approved (we have an event) !!
+            // Approving an order means you create an OrderApproved domain event and send it to the appropriate handlers for processing.
+            orderApproveddHandler.Handle(new OrderApproved(order.Id));
         }
     }
 }

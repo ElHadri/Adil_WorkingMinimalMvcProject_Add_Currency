@@ -8,7 +8,9 @@ namespace SqlDataAccessLayer
     public class CommerceContext : DbContext
     {
         private readonly string _connectionString;
+
         public DbSet<ProductEntity> Products { get; set; }
+        public DbSet<AuditEntry> AuditEntries { get; set; }
 
         public CommerceContext(string connectionString)
         {

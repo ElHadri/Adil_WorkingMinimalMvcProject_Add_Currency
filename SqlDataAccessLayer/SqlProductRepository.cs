@@ -9,11 +9,14 @@ namespace SqlDataAccessLayer
     public class SqlProductRepository : IProductRepository
     {
         private readonly CommerceContext _context;
+
+        // ctor
         public SqlProductRepository(CommerceContext context)
         {
             if (context == null) throw new ArgumentNullException("context");
             _context = context;
         }
+
         public IEnumerable<FeaturedProduct> GetFeaturedProducts()
         {
             return from product in _context.Products
