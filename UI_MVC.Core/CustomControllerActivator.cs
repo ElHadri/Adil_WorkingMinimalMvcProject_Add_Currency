@@ -20,13 +20,15 @@ namespace UI_MVC.Core
         // ASP.NET Core MVC invokes this method to create a new controller instance for each incoming request(Adil)
         public object Create(ControllerContext context) // 'context' paramater est obligatoire même s'il n'est pas utilisé ici
         {
+            var commerceContext = new CommerceContext(_connectionString);
+
             /* Here we know that MVC asks for a HomeController. */
             return
                 new HomeController(
                     new ProductService(
-                        new SqlProductRepository(new CommerceContext(_connectionString)),
+                        new SqlProductRepository(commerceContext),
                         new AspNetUserContextAdapter(),
-                        new CurrencyConverter()));
+                        new CurrencyConverter(new SqlExchangeRateProvider(commerceContext))));
             /* If we do not know what MVC asks for. */
             //Type type = context.ActionDescriptor.ControllerTypeInfo.AsType();
             //if (type == typeof(HomeController))

@@ -18,6 +18,8 @@ namespace UI_MVC.Core.Models
         // Constructor
         public FeaturedDiscountedProductVM(FeaturedDiscountedProduct product)
         {
+            // To Do : CultureInfo
+
             //to encapsulate rendering logic
             SummaryText = string.Format(new CultureInfo("fr-BE"), "{0} ({1:C})", product.Name, product.UnitPrice.Amount);
         }

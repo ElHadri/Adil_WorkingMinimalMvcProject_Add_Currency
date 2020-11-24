@@ -22,6 +22,7 @@ namespace SqlDataAccessLayer
         {
             string[] codes = context.ExchangeRates.Select(rate => rate.CurrencyCode).ToArray();
 
+
             return codes.Select(code => new Currency(code));
         }
     }

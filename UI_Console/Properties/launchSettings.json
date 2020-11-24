@@ -1,8 +1,7 @@
 {
   "profiles": {
     "UI_Console": {
-      "commandName": "Project",
-      "commandLineArgs": "\"Data Source=localhost\\ADINAMEDINSTANCE;Database=Steven&Mark_DI; Integrated Security=true;Connection Timeout=5\""
+      "commandName": "Project"
     }
   }
 }

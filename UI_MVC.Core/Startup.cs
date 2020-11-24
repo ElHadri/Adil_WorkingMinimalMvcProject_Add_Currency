@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using System;
 
 namespace UI_MVC.Core
 {
@@ -23,11 +26,24 @@ namespace UI_MVC.Core
          */
         public void ConfigureServices(IServiceCollection services)
         {
+            static string LoadConnectionString()
+            {
+                var configuration = new ConfigurationBuilder()
+                // Microsoft.Extensions.Configuration.FileExtensions
+                .SetBasePath(AppContext.BaseDirectory) //BaseDirectory is in: C:\Users\Adil\Source\Repos\DIPPP_source-code\Adil_Official\Adil_WorkingMinimalMvcProject_Add_Currency\UI_Console\bin\Debug\netcoreapp3.1\appsettings.json
+                // Microsoft.Extensions.Configuration.Json
+                .AddJsonFile("appsettings.json", optional: false)
+                .Build();
+
+                return
+                    configuration.GetConnectionString("CommerceConnectionString");
+            }
+
             //ce que j'ai ajouté à la version brute---------------------------------------------------------------------
             /*Adds a service to the framework, which retrieves the current HttpContext*/
             services.AddHttpContextAccessor();
             /*Replaces the default IControllerActivator with one that builds the object graphs*/
-            services.AddSingleton<IControllerActivator>(new CustomControllerActivator("Data Source=localhost\\ADINAMEDINSTANCE; Database=Steven&Mark_DI; Integrated Security=true; Connection Timeout=5"));
+            services.AddSingleton<IControllerActivator>(new CustomControllerActivator(LoadConnectionString()));
             //----------------------------------------------------------------------------------------------------------
             services.AddControllersWithViews();
 

@@ -16,7 +16,8 @@ namespace SqlDataAccessLayer
         public IEnumerable<FeaturedProduct> GetFeaturedProducts()
         {
             var currency = Currency.Euro;
-            return from product in _context.Products
+
+            return from product in _context.Products.ToArray()
                    where product.IsFeatured
                    select new FeaturedProduct
                    {

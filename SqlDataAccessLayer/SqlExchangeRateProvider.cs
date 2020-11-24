@@ -38,9 +38,9 @@ namespace SqlDataAccessLayer
         {
             if (currency == null) throw new ArgumentNullException(nameof(currency));
 
-            var rates = context.ExchangeRates.Single(r => r.CurrencyCode == currency.Code);
+            var exchangeRate = context.ExchangeRates.Single(r => r.CurrencyCode == currency.Code);
 
-            rates.Rate = rate;
+            exchangeRate.Rate = rate;
 
             context.SaveChanges();
         }
