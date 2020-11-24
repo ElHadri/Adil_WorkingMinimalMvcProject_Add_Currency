@@ -5,7 +5,6 @@ using UI_MVC.Core.Controllers;
 
 using DomainLogic;
 using SqlDataAccessLayer;
-using CurrencyConverterLibrary;
 
 namespace UI_MVC.Core
 {
@@ -27,7 +26,7 @@ namespace UI_MVC.Core
                     new ProductService(
                         new SqlProductRepository(new CommerceContext(_connectionString)),
                         new AspNetUserContextAdapter(),
-                        new CurrencyConverterTrial()));
+                        new CurrencyConverter()));
             /* If we do not know what MVC asks for. */
             //Type type = context.ActionDescriptor.ControllerTypeInfo.AsType();
             //if (type == typeof(HomeController))

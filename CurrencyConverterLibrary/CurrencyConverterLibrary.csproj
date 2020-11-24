@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CurrencyConverterTrial.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DomainLogic\DomainLogic.csproj" />
   </ItemGroup>
 

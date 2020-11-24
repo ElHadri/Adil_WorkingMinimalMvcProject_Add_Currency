@@ -9,6 +9,8 @@ namespace SqlDataAccessLayer
     {
         private readonly string _connectionString;
         public DbSet<ProductEntity> Products { get; set; }
+        public DbSet<ExchangeRate> ExchangeRates { get; set; }
+
 
         public CommerceContext(string connectionString)
         {

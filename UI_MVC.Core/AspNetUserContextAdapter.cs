@@ -10,7 +10,7 @@ namespace UI_MVC.Core
 
         public Currency PreferedCurrency
         {
-            get { return Currency.MAD; }  // je l'ai comme un choix préféré de l'utilisateur
+            get { return Currency.Dollar; }  // je l'ai comme un choix préféré de l'utilisateur
         }
 
         public bool IsInRole(Role role)

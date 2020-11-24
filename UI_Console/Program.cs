@@ -1,5 +1,4 @@
-﻿using CurrencyConverterLibrary;
-
+﻿
 using DomainLogic;
 
 using SqlDataAccessLayer;
@@ -48,45 +47,22 @@ namespace UI_Console
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.Unicode; 
-            Console.WriteLine("مرحبا بك");
 
             string connectionString = args[0];
-
-            Console.WriteLine("Are you a preferred customer ?  [True or False]");
-            string response1 = Console.ReadLine();
-            bool isPreferredCustomer = bool.Parse(response1);
-
-            Console.WriteLine("What's your favorite currency ?  [EUR, USD, or MAD]");
-            string response2 = Console.ReadLine();
-            Currency preferredCurrency = response2 switch
-            {
-                "USD" => Currency.USD,
-                "EUR" => Currency.EUR,
-                "MAD" => Currency.MAD,
-                _ => throw new Exception(response2)
-            };
 
             // Composition Root
             var products = new ProductService(
                  new SqlProductRepository(new CommerceContext(connectionString)),
-                 new ConsoleUserContextAdapter(isPreferredCustomer, preferredCurrency),
-                 new CurrencyConverterTrial())
+                 new ConsoleUserContextAdapter(true, Currency.Euro),
+                 new CurrencyConverter())
                  .GetFeaturedDiscountedProducts();
 
             // mon View
             Console.WriteLine("Featured products:");
 
-            CultureInfo Culture = preferredCurrency switch
-            {
-                Currency.EUR => new CultureInfo("fr-BE"),
-                Currency.USD => new CultureInfo("en-US"),
-                Currency.MAD => new CultureInfo("ar-MA"),
-                _ => new CultureInfo("fr-BE")
-            };
-
             foreach (var product in products)
             {
-                Console.WriteLine(string.Format(Culture, "{0} ({1:C})", product.Name, product.UnitPrice.Amount));
+                Console.WriteLine(string.Format(new CultureInfo("fr-BE"), "{0} ({1:C})", product.Name, product.UnitPrice.Amount));
             }
         }
     }
