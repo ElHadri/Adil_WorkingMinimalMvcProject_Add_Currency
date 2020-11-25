@@ -62,45 +62,27 @@ namespace UI_Console
 
         static void Main()
         {
-
             Console.OutputEncoding = Encoding.Unicode;
 
-            // Loads configuration values
+            // The 4 responsabilities of any Composition Root *********************************************
+
+            // Responsability 1: Load configuration values
             string connectionString = LoadConnectionString();
             var commerceContext = new CommerceContext(connectionString);
 
-            // Begin: Update currency ------------------------------------------------------------------------
-            Console.WriteLine("Do you want to update the exchange rates ? [y or n]");
-            var choice = Console.ReadLine();
-            if (choice == "y")
-            {
-                Console.WriteLine("Enter the currency code (For example: USD)");
-                var currencyCode = Console.ReadLine();
-                Console.WriteLine("Enter the exchange rate from the primary currency (EUR) to this currency (For example: 1.09)");
-                var exchangeRate = Console.ReadLine();
-                Currency currency = currencyCode switch
-                {
-                    "USD" => Currency.Dollar,
-                    "EUR" => Currency.Euro,
-                    "MAD" => Currency.Pound,
-                    _ => throw new Exception("user choice of the currencey to update the exchange rate ")
-                };
-
-                var sqlExchangeRateProvider = new SqlExchangeRateProvider(commerceContext);
-                sqlExchangeRateProvider.UpdateExchangeRate(currency, Convert.ToDecimal(exchangeRate));
-
-                var exchangeRateModified = commerceContext.ExchangeRates.Single(r => r.CurrencyCode == currency.Code);
-                Console.WriteLine($"Update succeeded :  { exchangeRateModified.CurrencyCode} : { exchangeRateModified.Rate }");
-            }
-            // End: Update currency ------------------------------------------------------------------------
-
-
-            // Composition Root
-            var products = new ProductService(
+            // Responsability 2: Build the object graph
+            IProductService productService = new ProductService(
                  new SqlProductRepository(commerceContext),
                  new ConsoleUserContextAdapter(false, Currency.Dollar),
-                 new CurrencyConverter(new SqlExchangeRateProvider(commerceContext)))
-                 .GetFeaturedDiscountedProducts();
+                 new CurrencyConverter(new SqlExchangeRateProvider(commerceContext)));
+
+            // Responsability 3: Invoke the desired functionality
+            var products = productService.GetFeaturedDiscountedProducts();
+
+            // Responsability 4: Release the object graph
+
+            //*********************************************************************************************
+
 
             // mon View
             Console.WriteLine("******************************");
