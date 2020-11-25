@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "UpdateCurrency": {
+      "commandName": "Project",
+      "commandLineArgs": "USD 2"
+    }
+  }
+}

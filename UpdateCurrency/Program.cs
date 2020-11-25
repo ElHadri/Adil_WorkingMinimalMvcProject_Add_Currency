@@ -1,9 +1,6 @@
 ﻿using DomainLogic;
-
 using Microsoft.Extensions.Configuration;
-
 using SqlDataAccessLayer;
-
 using System;
 
 namespace UpdateCurrency
@@ -19,24 +16,29 @@ namespace UpdateCurrency
 
 
             // Responsability 2:Building the object graph
-            IExchangeRateProvider sqlExchangeRateProvider =
+            var provider =
                 new SqlExchangeRateProvider(
                     new CommerceContext(connectionString));
 
-            Console.WriteLine("Enter the currency code (For example: USD)");
-            var currencyCode = Console.ReadLine();
-            Console.WriteLine("Enter the exchange rate from the primary currency (EUR) to this currency (For example: 1.09)");
-            var exchangeRate = Console.ReadLine();
+            decimal exchangeRate = -1;
+
+            if (args == null || args.Length != 2 || !decimal.TryParse(args[1], out exchangeRate))
+            {
+                Console.WriteLine("Usage: UpdateCurrency <USD | GBP> <rate>");
+            }
+
+            var currencyCode = args[0];
+
             Currency currency = currencyCode switch
             {
                 "USD" => Currency.Dollar,
                 "EUR" => Currency.Euro,
-                "MAD" => Currency.Pound,
+                "GBP" => Currency.Pound,
                 _ => throw new Exception("user choice of the currencey to update the exchange rate ")
             };
 
             // Responsability 3: Invoke the desired functionality (to do that, we must have Object graph & other things like args !!)
-            sqlExchangeRateProvider.UpdateExchangeRate(currency, Convert.ToDecimal(exchangeRate));
+            provider.UpdateExchangeRate(currency, exchangeRate);
 
             // Responsability 4: Release the object graph
 
